@@ -3,7 +3,7 @@ const { initializeDatabase } = require('../config/database');
 const router = require('./router');
 const cors = require('cors');
 const app = express();
-const port = env.process.PORT || 3030;
+const port = process.env.port || 3030;
 
 app.use(cors());
 app.use(express.json());
