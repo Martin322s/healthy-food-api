@@ -42,7 +42,7 @@ The application uses:
 
 - /save/:recipeId - send authorized POST request to the endpoint, containing the userId in the body, the recipe will be added to the users saved recipes and it will return an array containing all saved recipes of the current user.
 
--/save/:userId - send GET request to the endpoint and it will return all saved recipes of the current user.
+- /save/:userId - send GET request to the endpoint and it will return all saved recipes of the current user.
 
 # Products operations
 - BaseUrl: http://localhost:3030/products.
