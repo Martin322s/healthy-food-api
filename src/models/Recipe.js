@@ -3,15 +3,20 @@ const mongoose = require('mongoose');
 const recipeSchema = new mongoose.Schema({
     title: {
         type: String, 
-        required: true
+        required: true,
+        minLength: 3
     },
     category: {
         type: String,
-        required: true
+        required: true,
+        minLength: 3
     },
     imageUrl: {
         type: String,
         required: true,
+        validate: function() {
+            return this.imageUrl.startsWith('https://');
+        }
     },
     ingredients: [{
         type: String,

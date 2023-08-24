@@ -6,23 +6,27 @@ const authService = require('../services/authServices');
 router.post('/create', async (req, res) => {
     const { title, type, imageUrl, nutrition, description, _ownerId } = req.body;
 
-    try {
-        if (title == "" || type == "" || imageUrl == "") {
-            throw "All fields are required!";
-        } else {
-            const product = await productService.createProduct({
-                title,
-                type,
-                imageUrl,
-                nutrition,
-                description,
-                _ownerId
-            });
-            res.json(product);
+    if (req.headers['X-Authorization']) {
+        try {
+            if (title == "" || type == "" || imageUrl == "") {
+                throw "All fields are required!";
+            } else {
+                const product = await productService.createProduct({
+                    title,
+                    type,
+                    imageUrl,
+                    nutrition,
+                    description,
+                    _ownerId
+                });
+                res.json(product);
+            };
+        } catch (err) {
+            res.json({ message: err });
         };
-    } catch (err) {
-        res.json({ message: err });
-    };
+    } else {
+        res.status(401).json('Unauthorized - You don\'t have permissions to do that!');
+    }
 });
 
 router.get('/all', async (req, res) => {
@@ -50,16 +54,24 @@ router.get('/author/:id', async (req, res) => {
 });
 
 router.put('/edit/:id', async (req, res) => {
-    const data = req.body;
-    const productId = req.params.id;
-    const editted = await productService.editProduct(productId, data);
-    res.json(editted);
+    if (req.headers['X-Authorization']) {
+        const data = req.body;
+        const productId = req.params.id;
+        const editted = await productService.editProduct(productId, data);
+        res.json(editted);
+    } else {
+        res.status(401).json('Unauthorized - You don\'t have permissions to do that!');
+    }
 });
 
 router.delete('/delete/:id', async (req, res) => {
-    const productId = req.params.id;
-    const deleted = await productService.deleteProduct(productId);
-    res.json(deleted);
+    if (req.headers['X-Authorization']) {
+        const productId = req.params.id;
+        const deleted = await productService.deleteProduct(productId);
+        res.json(deleted);
+    } else {
+        res.status(401).json('Unauthorized - You don\'t have permissions to do that!');
+    }
 });
 
 module.exports = router;

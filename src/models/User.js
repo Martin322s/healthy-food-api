@@ -3,15 +3,21 @@ const mongoose = require('mongoose');
 const userSchema = new mongoose.Schema({
     firstName: {
         type: String,
-        required: true 
+        required: true,
+        minLength: 3
     },
     lastName: {
         type: String,
-        required: true
+        required: true,
+        minLength: 3
     },
     email: {
         type: String,
-        required: true
+        required: true,
+        validate: function() {
+            const regex = new RegExp("^[A-Za-z0-9_\.]+@[A-Za-z]+\.[A-Za-z]{2,3}$");
+            return regex.test(this.email);
+        }
     },
     imageUrl: {
         type: String,

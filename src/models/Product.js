@@ -3,15 +3,20 @@ const mongoose = require('mongoose');
 const productSchema = new mongoose.Schema({
     title: {
         type: String,
-        required: true
+        required: true,
+        minLength: 3
     },
     type: {
         type: String,
-        required: true
+        required: true,
+        minLength: 3
     },
     imageUrl: {
         type: String,
-        required: true
+        required: true,
+        validate: function() {
+            return this.imageUrl.startsWith('https://');
+        }
     },
     nutrition: [{
         type: String,

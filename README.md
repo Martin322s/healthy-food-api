@@ -15,7 +15,7 @@ The application uses:
 
 ## Application Endpoints
 # User authentication
-- Base URL: http://localhost:3030/users
+- Base URL: http://localhost:3030/users | Deployed URL: https://healthy-food-api.onrender.com/users
 
 - /register - send POST request to the endpoint with required data. All fields must be filled with correct information. The server responds with following data: _id, email, firstName, lastName and accessToken to perform authorized requests.
 
@@ -24,7 +24,7 @@ The application uses:
 - /logout - send authorized GET request to the endpoint with special header - [X-Authorization] containing the access token of the current user.
 
 # Recipe operations
--Base URL: http://localhost:3030/recipes
+-Base URL: http://localhost:3030/recipes | Deployed URL: https://healthy-food-api.onrender.com/recipes
 
 - /create - send authorized POST request to the endpoint with required data. All fields must be filled with correct information. The server responds with the newly created recipe.
 
@@ -45,7 +45,7 @@ The application uses:
 - /save/:userId - send GET request to the endpoint and it will return all saved recipes of the current user.
 
 # Products operations
-- BaseUrl: http://localhost:3030/products.
+- BaseUrl: http://localhost:3030/products | Deployed URL: https://healthy-food-api.onrender.com/products
 
 - /create - send authorized POST request to the endpoint with required data. All fields must be filled with correct information. The server responds with the newly created product.
 
