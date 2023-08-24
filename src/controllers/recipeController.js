@@ -78,16 +78,12 @@ router.delete('/delete/:id', async (req, res) => {
 });
 
 router.post('/save/:recipeId', async (req, res) => {
-    if (req.headers['X-Authorization']) {
         const { userId } = req.body;
         const recipeId = req.params.recipeId;
         const recipe = await recipeService.getOne(recipeId);
         await authService.saveRecipe(userId, recipe);
         const author = await authService.getUser(userId);
         res.json(author.savedRecipes);
-    } else {
-        res.status(401).json('Unauthorized - You don\'t have permissions to do that!');
-    }
 });
 
 router.get('/save/:userId', async (req, res) => {
@@ -97,7 +93,6 @@ router.get('/save/:userId', async (req, res) => {
 });
 
 router.post('/download', (req, res) => {
-    if (req.headers['X-Authorization']) {
         const data = req.body;
         const doc = new PDFDocument();
         const content = `${data.title}\n\nCategory: ${data.category}\n\nIngredients:\n${data.ingredients.join('\n')}\n\nPreparation:\n${data.preparation}`;
@@ -107,9 +102,6 @@ router.post('/download', (req, res) => {
         res.setHeader('Content-Type', 'application/pdf');
         doc.pipe(res);
         doc.end();
-    } else {
-        res.status(401).json('Unauthorized - You don\'t have permissions to do that!');
-    }
 });
 
 router.post('/comments', async (req, res) => {
