@@ -66,4 +66,5 @@ exports.unsave = async (userId, data) =>
     );
 
 exports.deleteUser = async (userId) => await User.findByIdAndDelete({ _id: userId });
-exports.updateUser = async (userId, userData) => await User.findByIdAndUpdate({ _id: userId }, userData);
+exports.updateUser = async (userId, userData) => 
+    await User.findByIdAndUpdate({ _id: userId }, userData);

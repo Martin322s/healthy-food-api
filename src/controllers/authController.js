@@ -106,15 +106,15 @@ router.get('/:userId', async (req, res) => {
 
 router.post("/unsave/:userId", async (req, res) => {
     // if (req.headers['x-authorization']) {
-        let recipes = req.body;
-        recipes = recipes.map(x => {
-            return x._id;
-        });
-        const author = await authService.unsave(req.params.userId, recipes);
-        const user = await authService.getUser(author._id);
-        res.json(user.savedRecipes);
+    let recipes = req.body;
+    recipes = recipes.map(x => {
+        return x._id;
+    });
+    const author = await authService.unsave(req.params.userId, recipes);
+    const user = await authService.getUser(author._id);
+    res.json(user.savedRecipes);
     // } else {
-        // res.status(401).json('Unauthorized - You don\'t have permissions to do that!');
+    // res.status(401).json('Unauthorized - You don\'t have permissions to do that!');
     // }
 });
 
@@ -139,4 +139,5 @@ router.patch("/update/:userId", async (req, res) => {
         res.status(401).json('Unauthorized - You don\'t have permissions to do that!');
     }
 });
+
 module.exports = router;

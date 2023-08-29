@@ -78,12 +78,12 @@ router.delete('/delete/:id', async (req, res) => {
 });
 
 router.post('/save/:recipeId', async (req, res) => {
-        const { userId } = req.body;
-        const recipeId = req.params.recipeId;
-        const recipe = await recipeService.getOne(recipeId);
-        await authService.saveRecipe(userId, recipe);
-        const author = await authService.getUser(userId);
-        res.json(author.savedRecipes);
+    const { userId } = req.body;
+    const recipeId = req.params.recipeId;
+    const recipe = await recipeService.getOne(recipeId);
+    await authService.saveRecipe(userId, recipe);
+    const author = await authService.getUser(userId);
+    res.json(author.savedRecipes);
 });
 
 router.get('/save/:userId', async (req, res) => {
@@ -93,15 +93,15 @@ router.get('/save/:userId', async (req, res) => {
 });
 
 router.post('/download', (req, res) => {
-        const data = req.body;
-        const doc = new PDFDocument();
-        const content = `${data.title}\n\nCategory: ${data.category}\n\nIngredients:\n${data.ingredients.join('\n')}\n\nPreparation:\n${data.preparation}`;
-        doc.title = 'Recipe PDF';
-        doc.text(content);
-        res.setHeader('Content-Disposition', `attachment; filename=${data.title}.pdf`);
-        res.setHeader('Content-Type', 'application/pdf');
-        doc.pipe(res);
-        doc.end();
+    const data = req.body;
+    const doc = new PDFDocument();
+    const content = `${data.title}\n\nCategory: ${data.category}\n\nIngredients:\n${data.ingredients.join('\n')}\n\nPreparation:\n${data.preparation}`;
+    doc.title = 'Recipe PDF';
+    doc.text(content);
+    res.setHeader('Content-Disposition', `attachment; filename=${data.title}.pdf`);
+    res.setHeader('Content-Type', 'application/pdf');
+    doc.pipe(res);
+    doc.end();
 });
 
 router.post('/comments', async (req, res) => {
@@ -113,6 +113,12 @@ router.get('/comments/:recipeId', async (req, res) => {
     const recipeId = req.params.recipeId;
     const comments = await recipeService.getAllComments(recipeId);
     res.json(comments);
+});
+
+router.delete('/delete-comments/:userId', async (req, res) => {
+    const userId = mongoose.Types.ObjectId(req.params.userId);
+    await recipeService.deleteComments(userId);
+    res.json({ message: 'Comments deleted successfully!' });
 });
 
 module.exports = router;
