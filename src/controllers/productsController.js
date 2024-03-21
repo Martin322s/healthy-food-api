@@ -6,7 +6,7 @@ const authService = require('../services/authServices');
 router.post('/create', async (req, res) => {
     const { title, type, imageUrl, nutrition, description, _ownerId } = req.body;
 
-    if (req.headers['X-Authorization']) {
+    if (req.headers['x-authorization']) {
         try {
             if (title == "" || type == "" || imageUrl == "") {
                 throw "All fields are required!";
@@ -54,7 +54,7 @@ router.get('/author/:id', async (req, res) => {
 });
 
 router.put('/edit/:id', async (req, res) => {
-    if (req.headers['X-Authorization']) {
+    if (req.headers['x-authorization']) {
         const data = req.body;
         const productId = req.params.id;
         const editted = await productService.editProduct(productId, data);
@@ -65,7 +65,7 @@ router.put('/edit/:id', async (req, res) => {
 });
 
 router.delete('/delete/:id', async (req, res) => {
-    if (req.headers['X-Authorization']) {
+    if (req.headers['x-authorization']) {
         const productId = req.params.id;
         const deleted = await productService.deleteProduct(productId);
         res.json(deleted);

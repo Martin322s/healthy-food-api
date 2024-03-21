@@ -8,8 +8,7 @@ const PDFDocument = require('pdfkit');
 
 router.post('/create', async (req, res) => {
     const { title, category, imageUrl, ingredients, preparation, _ownerId } = req.body;
-
-    if (req.headers['X-Authorization']) {
+    if (req.headers['x-authorization']) {
         try {
             if (title == "" || category == "" || imageUrl == "") {
                 throw "All fields are required!";
@@ -57,7 +56,7 @@ router.get('/author/:id', async (req, res) => {
 });
 
 router.put('/edit/:id', async (req, res) => {
-    if (req.headers['X-Authorization']) {
+    if (req.headers['x-authorization']) {
         const data = req.body;
         const recipeId = req.params.id;
         const editted = await recipeService.editRecipe(recipeId, data);
@@ -68,7 +67,7 @@ router.put('/edit/:id', async (req, res) => {
 });
 
 router.delete('/delete/:id', async (req, res) => {
-    if (req.headers['X-Authorization']) {
+    if (req.headers['x-authorization']) {
         const recipeId = req.params.id;
         const deleted = await recipeService.deleteRecipe(recipeId);
         res.json(deleted);
