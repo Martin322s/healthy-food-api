@@ -13,10 +13,7 @@ const productSchema = new mongoose.Schema({
     },
     imageUrl: {
         type: String,
-        required: true,
-        validate: function() {
-            return this.imageUrl.startsWith('https://');
-        }
+        required: true
     },
     nutrition: [{
         type: String,
