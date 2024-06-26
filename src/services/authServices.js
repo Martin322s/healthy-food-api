@@ -6,7 +6,7 @@ const jwtSign = promisify(jwt.sign);
 const { SALT_ROUNDS, SECRET } = require('../../config/constants');
 
 exports.registerUser = async (userData) => {
-    const user = await User.findOne({ email: userData.email });
+    const user = await User.findOne({ email: userData.email, firstName: userData.firstName });
 
     if (user) {
         return "User with this email already exists!";

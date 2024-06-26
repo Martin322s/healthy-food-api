@@ -6,6 +6,19 @@ const app = express();
 const port = 3030;
 
 app.use(cors());
+app.use((req, res, next) => {
+    const isProduction = process.env.NODE_ENV === 'production';
+
+    if (isProduction) {
+        res.cookie('name', 'value', {
+            sameSite: 'None',
+            secure: isProduction,
+            httpOnly: true
+        });
+    }
+
+    next();
+});
 app.use(express.json({ limit: '100mb' }));
 app.use(express.urlencoded({ limit: '100mb', extended: false }));
 app.use(router);
