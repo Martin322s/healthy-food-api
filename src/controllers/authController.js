@@ -2,6 +2,8 @@ const router = require('express').Router();
 const authService = require('../services/authServices');
 const { check, isEmail, equals } = require('express-validator');
 
+let tokenBlackList = new Set();
+
 router.post('/register', async (req, res) => {
     const {
         firstName,
@@ -71,6 +73,7 @@ router.post('/login', async (req, res) => {
 
 router.get('/logout', (req, res) => {
     if (req.headers['x-authorization']) {
+        tokenBlackList.add(req.headers['x-authorization']);
         res.clearCookie('session');
         res.json();
     } else {
@@ -105,21 +108,21 @@ router.get('/:userId', async (req, res) => {
 });
 
 router.post("/unsave/:userId", async (req, res) => {
-    // if (req.headers['x-authorization']) {
-    let recipes = req.body;
-    recipes = recipes.map(x => {
-        return x._id;
-    });
-    const author = await authService.unsave(req.params.userId, recipes);
-    const user = await authService.getUser(author._id);
-    res.json(user.savedRecipes);
-    // } else {
-    // res.status(401).json('Unauthorized - You don\'t have permissions to do that!');
-    // }
+    if (!tokenBlackList.has(req.headers['x-authorization'])) {
+        let recipes = req.body;
+        recipes = recipes.map(x => {
+            return x._id;
+        });
+        const author = await authService.unsave(req.params.userId, recipes);
+        const user = await authService.getUser(author._id);
+        res.json(user.savedRecipes);
+    } else {
+        res.status(401).json('Unauthorized - You don\'t have permissions to do that!');
+    }
 });
 
 router.delete("/delete/:userId", async (req, res) => {
-    if (req.headers['x-authorization']) {
+    if (!tokenBlackList.has(req.headers['x-authorization'])) {
         const userId = req.params.userId;
         const user = await authService.deleteUser(userId);
         res.json(user);
@@ -129,7 +132,7 @@ router.delete("/delete/:userId", async (req, res) => {
 });
 
 router.patch("/update/:userId", async (req, res) => {
-    if (req.headers['x-authorization']) {
+    if (!tokenBlackList.has(req.headers['x-authorization'])) {
         const userId = req.params.userId;
         const newData = req.body;
         const user = await authService.getAuthor(userId)
