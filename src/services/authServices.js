@@ -49,9 +49,9 @@ exports.resetPassword = async (userId, userData, password) => {
     const newUser = await User.findByIdAndUpdate({ _id: userId }, userData, { new: true });
     return newUser;
 };
-exports.getByEmail = async (email, secretWord) => {
+exports.getByEmail = async (email) => {
     const user = await User.find({ email: email });
-    if (user.length === 0 || secretWord !== user[0].secretWord) {
+    if (user.length === 0) {
         return { message: "User not found!" };
     } else {
         return user;
